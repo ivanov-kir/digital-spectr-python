@@ -11,33 +11,51 @@ from math import sqrt
 from timeit import default_timer
 from sys import maxsize
 
+import matplotlib.pyplot as plt
+
 if __name__ == '__main__':
     seed(100)
     n = input('n = ')
 
     start_time = default_timer()
 
+    coordinates = []
     max_distance = -maxsize
+    max_coordinates = ()
     min_distance = maxsize
+    min_coordinates = ()
     sum_distances = 0
     i = 0
+
     for _ in range(int(n)):
         i += 1
 
         x = randint(-100, 100)
         y = randint(-100, 100)
+        coordinates.append((x, y))
 
         distance = sqrt(pow(x - 0, 2) + pow(y - 0, 2))
         if distance < min_distance:
             min_distance = distance
+            min_coordinates = (x, y)
         if distance > max_distance:
             max_distance = distance
+            max_coordinates = (x, y)
         sum_distances += distance
 
     print(f'min={min_distance}\nmax={max_distance}\nmean={sum_distances / i}')
     print(f'Performance time: {default_timer() - start_time}')
 
-    # second
+    plt.scatter(*zip(*coordinates), s=3, c='#DC143C')
+    plt.plot(*zip(min_coordinates, (0, 0)), linewidth=5, linestyle='-', c='#4169E1')
+    plt.plot(*zip(max_coordinates, (0, 0)), linestyle='-', c='#FF4500')
+    plt.legend(labels=(f'min = {min_distance}', f'max = {max_distance}', f'mean = {sum_distances / i}'))
+    plt.title('Расположение точек')
+    plt.axhline(linestyle='--', c='k')
+    plt.axvline(linestyle='--', c='k')
+    plt.show()
+
+    # Второй вариант решения (без графика)
     # start_time = default_timer()
     # coordinates = [(randint(-100, 100), randint(-100, 100))
     #                for _ in range(int(n))]
@@ -51,9 +69,6 @@ if __name__ == '__main__':
     # min_ = min(distances)
     # max_ = max(distances)
     # mean = sum(distances) / len(distances)
+    #
     # print(f'min={min(distances)}\nmax={max(distances)}\nmean={sum(distances) / len(distances)}')
     # print(f'Performance time: {default_timer() - start_time}')
-
-
-
-
